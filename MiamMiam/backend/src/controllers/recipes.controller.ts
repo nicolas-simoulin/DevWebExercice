@@ -152,7 +152,7 @@ recipesController.delete("/:id", AuthService.authorize, (req: AuthenticatedReque
  * @returns {404} - Recette non trouvée
  */
 recipesController.patch("/:id", AuthService.authorize, (req: AuthenticatedRequest, res: Response) =>{
-  LoggerService.info("[POST] /recipies/:id");
+  LoggerService.info("[PATCH] /recipes/:id");
 
   if(!req.user) return res.sendStatus(401);
   
@@ -161,4 +161,22 @@ recipesController.patch("/:id", AuthService.authorize, (req: AuthenticatedReques
   const id = Number(req.params.id);
   
   if(!Number.isInteger(id) || id < 1) return res.sendStatus(400);
+
+  const recipe = RecipesService.getById(id);
+
+  if(!recipe) 
+    return res.sendStatus(404);
+
+  if(recipe.authorId !== user.id && user.role !== ERole.ADMIN)
+    return res.sendStatus(403);
+
+  const body = req.body;
+
+  const updateRecipe = RecipesService.update(id, body);
+  if(!updateRecipe)
+    return res.sendStatus(404);
+  
+  return res.status(200).json(RecipesMapper.toDTO(updateRecipe));
+
+
 })

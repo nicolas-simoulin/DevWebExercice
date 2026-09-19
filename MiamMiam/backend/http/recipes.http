@@ -154,3 +154,12 @@ Authorization: {{login.response.body.token}}
 ### Supprimer une recette déjà supprimée -> 404
 DELETE {{server}}/recipes/{{createRecipe.response.body.id}}
 Authorization: {{login.response.body.token}}
+
+### Met a jour partiellement une recette
+PATCH {{server}}/recipes/{{createRecipe.response.body.id}}
+Content-Type: application/json
+Authorization: {{login.response.body.token}}
+
+{
+  "dificulty": 2
+}

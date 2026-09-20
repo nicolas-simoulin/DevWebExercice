@@ -5,3 +5,6 @@ logs/
 env/prod.env
 .DS_Store
 *.zip
+.git
+.gitattibutes
+.env

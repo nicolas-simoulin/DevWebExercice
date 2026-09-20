@@ -153,8 +153,6 @@ recipesController.delete("/:id", AuthService.authorize, (req: AuthenticatedReque
  */
 recipesController.patch("/:id", AuthService.authorize, (req: AuthenticatedRequest, res: Response) =>{
   LoggerService.info("[PATCH] /recipes/:id");
-
-  if(!req.user) return res.sendStatus(401);
   
   const user = req.user
 
@@ -162,17 +160,20 @@ recipesController.patch("/:id", AuthService.authorize, (req: AuthenticatedReques
   
   if(!Number.isInteger(id) || id < 1) return res.sendStatus(400);
 
+  const body = req.body;
+
+  if(body.isPatchRecipeDTO)
+    return res.sendStatus(400);
+
   const recipe = RecipesService.getById(id);
 
   if(!recipe) 
     return res.sendStatus(404);
 
-  if(recipe.authorId !== user.id && user.role !== ERole.ADMIN)
+  if(recipe.authorId !== user?.id && user?.role !== ERole.ADMIN)
     return res.sendStatus(403);
 
-  const body = req.body;
-
-  const updateRecipe = RecipesService.update(id, body);
+  const updateRecipe = RecipesService.updatePatch(id, body);
   if(!updateRecipe)
     return res.sendStatus(404);
   

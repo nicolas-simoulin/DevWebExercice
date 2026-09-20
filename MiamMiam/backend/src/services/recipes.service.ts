@@ -1,5 +1,5 @@
 import { RecipesMapper } from "../mappers/recipes.mapper";
-import { NewRecipe, Recipe, RecipeDBO, RecipeFilter } from "../models/recipe.model";
+import { NewRecipe, Recipe, RecipeDBO, RecipeFilter, RecipePatch, RecipePatchDTO } from "../models/recipe.model";
 import { AbstractService } from "./abstract.service";
 import { UsersService } from "./users.service";
 
@@ -166,5 +166,19 @@ export class RecipesService extends AbstractService {
 
     UsersService.removeFavoriteForAll(id);
     return true;
+  }
+
+  static updatePatch(id: number, updatedRecipe: RecipePatch): Recipe | undefined {
+    const recipes = this.readRecipesDB();
+    const index = recipes.findIndex((recipe) => recipe.id === id);
+    if(index === -1) return undefined;
+
+    recipes[index].difficulty = updatedRecipe.difficulty;
+
+     if (!this.writeRecipesDB(recipes)) {
+      return undefined;
+    }
+    
+    return recipes[index];
   }
 }

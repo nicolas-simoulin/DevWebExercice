@@ -94,3 +94,11 @@ export interface RecipeFilter {
   ingredient?: string; // nom d'ingrédient
   maxPrepTime?: number; // prepTime + cookTime <= maxPrepTime
 }
+
+export interface RecipePatchDTO {
+  difficulty : number
+}
+
+export interface RecipePatch {
+  difficulty : number
+}

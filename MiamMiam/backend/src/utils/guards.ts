@@ -1,4 +1,4 @@
-import { NewRecipeDTO } from "../models/recipe.model";
+import { NewRecipeDTO, RecipePatchDTO } from "../models/recipe.model";
 import { CredentialsDTO, NewUserDTO } from "../models/user.model";
 
 /**
@@ -61,4 +61,13 @@ export function isNewRecipeDTO(obj: any): obj is NewRecipeDTO {
   if (!Array.isArray(recipe.ingredients)) return false;
   if (!Array.isArray(recipe.steps)) return false;
   return true;
+}
+
+export function isPatchRecipeDTO(obj: any): obj is RecipePatchDTO {
+  return (
+    isObject(obj) &&
+    isNumber((obj as any).difficulty) && 
+    (obj as any).difficulty >= 1 &&
+    (obj as any).difficulty <= 5
+  );
 }

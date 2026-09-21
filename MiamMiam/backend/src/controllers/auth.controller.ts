@@ -6,6 +6,7 @@ import { AuthService } from "../services/auth.service";
 import { LoggerService } from "../services/logger.service";
 import { UsersService } from "../services/users.service";
 import { isCredentialsDTO, isNewUserDTO } from "../utils/guards";
+import { generateToken } from "../utils/auth";
 
 export const authController = Router();
 
@@ -40,14 +41,19 @@ authController.post("/login", (req: Request, res: Response) => {
   const body: unknown = req.body;
   if (!isCredentialsDTO(body)) return res.sendStatus(400);
 
-  const email = body.email;
-  const password = body.password;
+  const { email, password } = body;
+  const user = UsersService.getByEmail(email);
+  if (!user || user.password !== password) { // pas sécurisé, hachage à voir en séance 04
+    return res.sendStatus(401);
+  }
 
-  const token = AuthService.login(email, password);
-  if (!token) return res.sendStatus(401);
+  const token = generateToken({
+    id: user.id,
+    email: user.email,
+    role: user.role,
+  });
 
-  const tokenDTO: TokenDTO = { token: token };
-  return res.status(200).json(tokenDTO);
+  res.json({ token });
 });
 
 /**
@@ -58,8 +64,9 @@ authController.get("/me", AuthService.authorize, (req: AuthenticatedRequest, res
   LoggerService.info("[GET] /auth/me");
 
   if (!req.user) return res.sendStatus(401);
-  const user = req.user;
+  
+  const user = UsersService.getById(req.user.id);
 
-  const userDTO: UserDTO = UsersMapper.toDTO(user);
+  const userDTO: UserDTO = UsersMapper.toDTO(user!);
   return res.status(200).json(userDTO);
 });

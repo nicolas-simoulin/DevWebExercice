@@ -53,7 +53,7 @@ authController.post("/login", (req: Request, res: Response) => {
     role: user.role,
   });
 
-  res.json({ token });
+  return res.status(200).json({ token });
 });
 
 /**

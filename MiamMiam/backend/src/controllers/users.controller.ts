@@ -35,10 +35,9 @@ usersController.get("/", AuthService.authorize, AuthService.isAdmin, (req: Authe
 usersController.get("/me/favorites", AuthService.authorize, (req: AuthenticatedRequest, res: Response) => {
   LoggerService.info("[GET] /users/me/favorites");
 
-  if (!req.user) return res.sendStatus(401);
-  const user = req.user;
+  const user = UsersService.getById(req.user!.id);
 
-  const recipes = RecipesService.getByIds(user.favorites);
+  const recipes = RecipesService.getByIds(user!.favorites);
   const recipesDTO: RecipeDTO[] = [];
   for (const recipe of recipes) {
     recipesDTO.push(RecipesMapper.toDTO(recipe));

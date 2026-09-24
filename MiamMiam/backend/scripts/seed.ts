@@ -12,7 +12,7 @@ const users = [
   {
     id: 1,
     email: "admin@miammiam.be",
-    password: "admin",
+    passwordHash: "admin",
     first_name: "Admin",
     last_name: "MiamMiam",
     role: "admin",
@@ -23,7 +23,7 @@ const users = [
   {
     id: 2,
     email: "alice@vinci.be",
-    password: "alice",
+    passwordHash: "alice",
     first_name: "Alice",
     last_name: "Dupont",
     role: "user",
@@ -34,7 +34,7 @@ const users = [
   {
     id: 3,
     email: "bob@vinci.be",
-    password: "bob",
+    passwordHash: "bob",
     first_name: "Bob",
     last_name: "Martin",
     role: "user",

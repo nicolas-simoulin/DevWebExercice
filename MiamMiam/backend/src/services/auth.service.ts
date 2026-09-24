@@ -4,18 +4,16 @@ import { ERole, User } from "../models/user.model";
 import { generateToken, verifyToken } from "../utils/auth";
 import { LoggerService } from "./logger.service";
 import { UsersService } from "./users.service";
-import bcrypt from "bcrypt";
 
 export class AuthService {
   /**
    * Vérifie les identifiants.
    * @returns un token si l'email et le mot de passe sont corrects, undefined sinon
    */
-  static async login(email: string, password: string): Promise< string | undefined >{
+  static login(email: string, password: string): string | undefined {
     const user = UsersService.getByEmail(email);
     if (!user) return undefined;
-    const isMatch = await bcrypt.compare(password, user.passwordHash)
-    if (!isMatch) return undefined;
+    if (user.password !== password) return undefined;
 
     const token = generateToken({
       id: user.id,

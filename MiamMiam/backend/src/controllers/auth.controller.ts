@@ -24,11 +24,10 @@ authController.post("/register", async (req: Request, res: Response) => {
   const user = await UsersService.create(newUser);
   if (!user) return res.sendStatus(409); // email déjà utilisé
 
-  const token = await AuthService.login(user.email, body.password);
+  const token = AuthService.login(user.email, user.password);
   if (!token) return res.sendStatus(500);
 
-  const tokenDTO: TokenDTO = {token};
-  return res.status(201).json(tokenDTO);
+  return res.status(201).json({ token });
 });
 
 /**

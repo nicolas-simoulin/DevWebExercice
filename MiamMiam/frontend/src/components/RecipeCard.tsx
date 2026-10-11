@@ -1,28 +1,27 @@
-const recipe = {
-  title: "Pâtes Carbonara",
-  imageUrl: "https://images.unsplash.com/photo-1612874742237-6526221588e3?w=800",
-  duration: 20,
-  difficulty: "Facile",
+interface RecipeCardProps {
+  title: string,
+  imageUrl: string,
+  duration: number,
+  difficulty: number,
+  description? : string
 };
 
-const RecipeCard = () => {
+const RecipeCard = ({
+    title,
+    imageUrl,
+    duration,
+    difficulty,
+    description
+}: RecipeCardProps) => {
     return (
-        <div className="recipe-card">
-            <h2>{recipe.title}</h2>
-            <img
-                src={recipe.imageUrl}
-                alt={recipe.title}
-                style={{ width: "200px", height: "150px", objectFit: "cover" }}
-            />
-            <p>
-                <strong>Dureée:</strong> {recipe.duration}
-            </p>
-            <p>
-                <strong>Difficulté:</strong> {recipe.difficulty}
-            </p>
-                
+        <div>
+            <h2>{title}</h2>
+            <img src={imageUrl} alt={title}/>
+            {description && <p>{description}</p>}
+            <p>{duration} min</p>
+            <p>Difficulté : {difficulty}/5 </p>
         </div>
-    )
+    );
 };
 
 export default RecipeCard;

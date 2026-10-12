@@ -1,19 +1,22 @@
-import {type ReactNode} from "react";
+import { type ReactNode } from "react";
+import { Toolbar, AppBar, Container, Typography } from "@mui/material";
 
 interface PageLayoutProps {
-    title: string;
-    children: ReactNode
+  title: string;
+  children: ReactNode;
 }
 
-const PageLayout = ({
-    title,
-    children
-}: PageLayoutProps) =>{
-    return <div className="page">
-        <header><h1>{title}</h1></header>
-        <main>{children}</main>
-        <footer>&copy; 2026 MiamMiam</footer>
-    </div>;
+const PageLayout = ({ title, children }: PageLayoutProps) => {
+  return (
+    <AppBar position="static">
+      <Toolbar>
+        <Typography variant="h6" component="h1">
+          {title}
+        </Typography>
+      </Toolbar>
+      <Container maxWidth="lg">{children}</Container>
+    </AppBar>
+  );
 };
 
 export default PageLayout;

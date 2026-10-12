@@ -36,6 +36,7 @@ const RecipeCard = ({
           {duration} min
         </Typography>
         <Chip label={tags} color="primary" size="small" />
+        <Rating value={difficulty} max={5} readOnly />
       </CardContent>
       <CardActions>
         <Button size="small">Voir la recette</Button>

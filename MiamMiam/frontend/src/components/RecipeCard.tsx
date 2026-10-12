@@ -1,26 +1,46 @@
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+  Chip,
+  Rating,
+} from "@mui/material";
+
 interface RecipeCardProps {
   title: string;
   imageUrl: string;
   duration: number;
   difficulty: number;
   description?: string;
+  tags: string;
 }
-
 const RecipeCard = ({
   title,
   imageUrl,
   duration,
   difficulty,
   description,
+  tags,
 }: RecipeCardProps) => {
   return (
-    <div>
-      <h2>{title}</h2>
-      <img src={imageUrl} alt={title} />
-      {description && <p>{description}</p>}
-      <p>{duration} min</p>
-      <p>Difficulté : {difficulty}/5 </p>
-    </div>
+    <Card sx={{ maxWidth: 345 }}>
+      <CardMedia component="img" height="200" image={imageUrl} alt={title} />
+      <CardContent>
+        <Typography variant="h6" component="h2">
+          {title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {duration} min
+        </Typography>
+        <Chip label={tags} color="primary" size="small" />
+      </CardContent>
+      <CardActions>
+        <Button size="small">Voir la recette</Button>
+      </CardActions>
+    </Card>
   );
 };
 

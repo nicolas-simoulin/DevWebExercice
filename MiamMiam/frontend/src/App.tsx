@@ -14,8 +14,8 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div className="app">
-        <img src={logoMiamMiam} alt="Logo MiamMiam" />
         <PageLayout title="Miam Miam">
+          <img src={logoMiamMiam} alt="Logo MiamMiam" />
           <RecipeList></RecipeList>
         </PageLayout>
       </div>

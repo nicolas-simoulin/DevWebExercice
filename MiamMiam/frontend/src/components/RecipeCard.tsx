@@ -8,35 +8,44 @@ import {
   Chip,
   Rating,
 } from "@mui/material";
+import type { Recipe } from "../models/recipe";
+import SoupKitchenIcon from "@mui/icons-material/SoupKitchen";
+import TimerIcon from "@mui/icons-material/Timer";
 
 interface RecipeCardProps {
-  title: string;
-  imageUrl: string;
-  duration: number;
-  difficulty: number;
-  description?: string;
-  tags: string;
+  recipe: Recipe;
 }
-const RecipeCard = ({
-  title,
-  imageUrl,
-  duration,
-  difficulty,
-  description,
-  tags,
-}: RecipeCardProps) => {
+const RecipeCard = ({ recipe }: RecipeCardProps) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardMedia component="img" height="200" image={imageUrl} alt={title} />
+      <CardMedia
+        component="img"
+        height="200"
+        image={recipe.imageUrl}
+        alt={recipe.title}
+      />
       <CardContent>
         <Typography variant="h6" component="h2">
-          {title}
+          {recipe.title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {duration} min
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ display: "flex", alignItems: "center", gap: "5px" }}
+        >
+          {<TimerIcon />}
+          {recipe.prepTime + recipe.cookTime} min
         </Typography>
-        <Chip label={tags} color="primary" size="small" />
-        <Rating value={difficulty} max={5} readOnly />
+        {recipe.tags.map((tag) => (
+          <Chip key={tag} label={tag} color="primary" size="small" />
+        ))}
+        <Rating
+          icon={<SoupKitchenIcon />}
+          emptyIcon={<SoupKitchenIcon />}
+          value={recipe.difficulty}
+          max={5}
+          readOnly
+        />
       </CardContent>
       <CardActions>
         <Button size="small">Voir la recette</Button>

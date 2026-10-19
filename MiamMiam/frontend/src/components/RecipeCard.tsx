@@ -11,6 +11,8 @@ import {
 import type { Recipe } from "../models/recipe";
 import SoupKitchenIcon from "@mui/icons-material/SoupKitchen";
 import TimerIcon from "@mui/icons-material/Timer";
+import FavoriteButton from "./FavoriteButton";
+import RecipeDetail from "./RecipeDetail";
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -48,8 +50,10 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
         />
       </CardContent>
       <CardActions>
+        <FavoriteButton />
         <Button size="small">Voir la recette</Button>
       </CardActions>
+      <RecipeDetail recipe={recipe} />
     </Card>
   );
 };

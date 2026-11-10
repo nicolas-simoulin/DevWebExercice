@@ -30,10 +30,19 @@ interface IngredientInput {
 
 type IngredientField = "name" | "quantity" | "unit";
 
+interface StepsInput {
+  key: number;
+  step: string;
+}
+
+type StepsField = "step";
+
 const RecipeForm = () => {
   const [submitted, setSubmmitted] = useState(false);
 
   const [ingredients, setIngredients] = useState<IngredientInput[]>([]);
+
+  const [steps, setSteps] = useState<StepsInput[]>([]);
 
   const addIngredient = () => {
     setIngredients([
@@ -41,6 +50,7 @@ const RecipeForm = () => {
       { key: Date.now(), name: "", quantity: "", unit: "g" },
     ]);
   };
+
   const removeIngredient = (key: number) =>
     setIngredients(ingredients.filter((ingredient) => ingredient.key !== key));
 
@@ -52,6 +62,20 @@ const RecipeForm = () => {
     setIngredients(
       ingredients.map((ingredient) =>
         ingredient.key === key ? { ...ingredient, [field]: value } : ingredient,
+      ),
+    );
+
+  const addStep = () => {
+    setSteps([...steps, { key: Date.now(), step: "" }]);
+  };
+
+  const removeStep = (key: number) =>
+    setSteps(steps.filter((step) => step.key !== key));
+
+  const updateStep = (key: number, field: StepsField, value: string) =>
+    setSteps(
+      steps.map((step) =>
+        step.key === key ? { ...step, [field]: value } : step,
       ),
     );
 
@@ -182,6 +206,8 @@ const RecipeForm = () => {
         <MenuItem value="2">Plat</MenuItem>
       </TextField>
 
+      {/*INGREDIENT*/}
+
       {ingredients.map((ingredient) => (
         <Stack key={ingredient.key} direction="row" spacing={1}>
           <TextField
@@ -214,7 +240,24 @@ const RecipeForm = () => {
           </IconButton>
         </Stack>
       ))}
+
       <Button onClick={addIngredient}>Ajouter un ingrédient</Button>
+      {/*STEP*/}
+
+      {steps.map((step) => (
+        <Stack key={step.key} direction="row" spacing={1}>
+          <TextField
+            label="Etape"
+            type="string"
+            value={step.step}
+            onChange={(e) => updateStep(step.key, "step", e.target.value)}
+          />
+          <IconButton onClick={() => removeStep(step.key)} aria-label="Retirer">
+            <DeleteIcon />
+          </IconButton>
+        </Stack>
+      ))}
+      <Button onClick={addStep}>Ajouter une étape</Button>
       <Button type="submit" variant="contained">
         Créer la recette
       </Button>

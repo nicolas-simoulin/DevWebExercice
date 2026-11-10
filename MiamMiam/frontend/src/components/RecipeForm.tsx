@@ -1,6 +1,14 @@
-import { Button, MenuItem, Rating, Stack, TextField } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  MenuItem,
+  Rating,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { useState, type ChangeEvent, type SubmitEvent } from "react";
 import SoupKitchenIcon from "@mui/icons-material/SoupKitchen";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface RecipeFormData {
   title: string;
@@ -12,8 +20,40 @@ interface RecipeFormData {
   difficulty: number | null;
   category: string;
 }
+
+interface IngredientInput {
+  key: number;
+  name: string;
+  quantity: string;
+  unit: string;
+}
+
+type IngredientField = "name" | "quantity" | "unit";
+
 const RecipeForm = () => {
   const [submitted, setSubmmitted] = useState(false);
+
+  const [ingredients, setIngredients] = useState<IngredientInput[]>([]);
+
+  const addIngredient = () => {
+    setIngredients([
+      ...ingredients,
+      { key: Date.now(), name: "", quantity: "", unit: "g" },
+    ]);
+  };
+  const removeIngredient = (key: number) =>
+    setIngredients(ingredients.filter((ingredient) => ingredient.key !== key));
+
+  const updateIngredient = (
+    key: number,
+    field: IngredientField,
+    value: string,
+  ) =>
+    setIngredients(
+      ingredients.map((ingredient) =>
+        ingredient.key === key ? { ...ingredient, [field]: value } : ingredient,
+      ),
+    );
 
   const [form, setForm] = useState<RecipeFormData>({
     title: "",
@@ -141,6 +181,40 @@ const RecipeForm = () => {
         <MenuItem value="1">Entrée</MenuItem>
         <MenuItem value="2">Plat</MenuItem>
       </TextField>
+
+      {ingredients.map((ingredient) => (
+        <Stack key={ingredient.key} direction="row" spacing={1}>
+          <TextField
+            label="Ingredient"
+            value={ingredient.name}
+            onChange={(e) =>
+              updateIngredient(ingredient.key, "name", e.target.value)
+            }
+          />
+          <TextField
+            label="Quantité"
+            type="number"
+            value={ingredient.quantity}
+            onChange={(e) =>
+              updateIngredient(ingredient.key, "quantity", e.target.value)
+            }
+          />
+          <TextField
+            label="Unité"
+            value={ingredient.unit}
+            onChange={(e) =>
+              updateIngredient(ingredient.key, "unit", e.target.value)
+            }
+          />
+          <IconButton
+            onClick={() => removeIngredient(ingredient.key)}
+            aria-label="Retirer"
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Stack>
+      ))}
+      <Button onClick={addIngredient}>Ajouter un ingrédient</Button>
       <Button type="submit" variant="contained">
         Créer la recette
       </Button>

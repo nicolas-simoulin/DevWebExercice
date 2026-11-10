@@ -44,6 +44,10 @@ const RecipeForm = () => {
 
   const [steps, setSteps] = useState<StepsInput[]>([]);
 
+  {
+    /*INGREDIENT*/
+  }
+
   const addIngredient = () => {
     setIngredients([
       ...ingredients,
@@ -64,6 +68,10 @@ const RecipeForm = () => {
         ingredient.key === key ? { ...ingredient, [field]: value } : ingredient,
       ),
     );
+
+  {
+    /*STEP*/
+  }
 
   const addStep = () => {
     setSteps([...steps, { key: Date.now(), step: "" }]);
@@ -95,12 +103,19 @@ const RecipeForm = () => {
   const cookTimeError = form.cookTime === "" || Number(form.cookTime) < 0;
   const servingsError = form.servings === "" || Number(form.servings) < 1;
   const categoryError = form.category === "";
+  const ingredientsError = ingredients.some(
+    (ingredient) =>
+      ingredient.name.trim() !== "" && Number(ingredient.quantity) > 0,
+  );
+  const stepsError = ingredients.some((step) => step.name.trim() === "");
   const isValid =
     !titleError &&
     !prepTimeError &&
     !cookTimeError &&
     !categoryError &&
-    !servingsError;
+    !servingsError &&
+    !ingredientsError &&
+    !stepsError;
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

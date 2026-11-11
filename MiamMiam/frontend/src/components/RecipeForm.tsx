@@ -9,6 +9,7 @@ import {
 import { useState, type ChangeEvent, type SubmitEvent } from "react";
 import SoupKitchenIcon from "@mui/icons-material/SoupKitchen";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Typography } from "@mui/material";
 
 interface RecipeFormData {
   title: string;
@@ -103,11 +104,13 @@ const RecipeForm = () => {
   const cookTimeError = form.cookTime === "" || Number(form.cookTime) < 0;
   const servingsError = form.servings === "" || Number(form.servings) < 1;
   const categoryError = form.category === "";
-  const ingredientsError = ingredients.some(
+  const hasValidIngredient = ingredients.some(
     (ingredient) =>
       ingredient.name.trim() !== "" && Number(ingredient.quantity) > 0,
   );
-  const stepsError = ingredients.some((step) => step.name.trim() === "");
+  const ingredientsError = !hasValidIngredient;
+  const hasValidStep = steps.some((step) => step.step.trim() !== "");
+  const stepsError = !hasValidStep;
   const isValid =
     !titleError &&
     !prepTimeError &&
@@ -133,6 +136,14 @@ const RecipeForm = () => {
       prepTime: Number(form.prepTime),
       cookTime: Number(form.cookTime),
       servings: Number(form.servings),
+      ingredients: ingredients.map((ingredient) => ({
+        name: ingredient.name,
+        quantity: Number(ingredient.quantity),
+        unit: ingredient.unit,
+      })),
+      steps: steps.map((step) => ({
+        step: step.step,
+      })),
     });
     setForm({
       title: "",
@@ -144,6 +155,9 @@ const RecipeForm = () => {
       difficulty: null,
       category: "",
     });
+    setIngredients([]);
+    setSteps([]);
+    setSubmmitted(false);
   };
 
   return (
@@ -255,8 +269,14 @@ const RecipeForm = () => {
           </IconButton>
         </Stack>
       ))}
+      {submitted && ingredientsError && (
+        <Typography color="error" variant="body2">
+          Veuillez ajouter au moins un ingrédient valide.
+        </Typography>
+      )}
 
       <Button onClick={addIngredient}>Ajouter un ingrédient</Button>
+
       {/*STEP*/}
 
       {steps.map((step) => (
@@ -272,6 +292,11 @@ const RecipeForm = () => {
           </IconButton>
         </Stack>
       ))}
+      {submitted && stepsError && (
+        <Typography color="error" variant="body2">
+          Veuillez ajouter au moins une étape valide.
+        </Typography>
+      )}
       <Button onClick={addStep}>Ajouter une étape</Button>
       <Button type="submit" variant="contained">
         Créer la recette

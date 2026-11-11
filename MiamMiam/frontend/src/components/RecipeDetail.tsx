@@ -17,7 +17,7 @@ const RecipeDetail = ({ recipe }: RecipeDetailProps) => {
     <>
       <h2>{recipe.title}</h2>
       <p>{recipe.description}</p>
-      <p>
+      <div>
         <strong>Préparation :</strong> {recipe.prepTime} min |
         <strong> Cuisson :</strong> {recipe.cookTime} min |
         <strong> Portions :</strong>
@@ -34,7 +34,7 @@ const RecipeDetail = ({ recipe }: RecipeDetailProps) => {
             <Add />
           </IconButton>
         </Stack>
-      </p>
+      </div>
 
       <h3>Ingrédients</h3>
       <ul>

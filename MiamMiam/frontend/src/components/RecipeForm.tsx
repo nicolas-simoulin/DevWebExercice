@@ -10,6 +10,8 @@ import { useState, type ChangeEvent, type SubmitEvent } from "react";
 import SoupKitchenIcon from "@mui/icons-material/SoupKitchen";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Typography } from "@mui/material";
+import type { NewRecipe } from "../models/recipe";
+import { categories } from "../data/categories";
 
 interface RecipeFormData {
   title: string;
@@ -38,7 +40,11 @@ interface StepsInput {
 
 type StepsField = "step";
 
-const RecipeForm = () => {
+interface RecipeFormProps {
+  onAdd: (recipe: NewRecipe) => void;
+}
+
+const RecipeForm = ({ onAdd }: RecipeFormProps) => {
   const [submitted, setSubmmitted] = useState(false);
 
   const [ingredients, setIngredients] = useState<IngredientInput[]>([]);
@@ -131,19 +137,22 @@ const RecipeForm = () => {
     event.preventDefault();
     setSubmmitted(true);
     if (!isValid) return;
-    console.log({
-      ...form,
+    onAdd({
+      title: form.title,
+      description: form.description,
+      imageUrl: form.urlImage,
       prepTime: Number(form.prepTime),
       cookTime: Number(form.cookTime),
       servings: Number(form.servings),
+      difficulty: Number(form.difficulty),
+      categoryId: Number(form.category),
+      tags: [],
       ingredients: ingredients.map((ingredient) => ({
         name: ingredient.name,
         quantity: Number(ingredient.quantity),
         unit: ingredient.unit,
       })),
-      steps: steps.map((step) => ({
-        step: step.step,
-      })),
+      steps: steps.map((step) => step.step),
     });
     setForm({
       title: "",
@@ -231,8 +240,9 @@ const RecipeForm = () => {
         error={submitted && categoryError}
         helperText={submitted && categoryError ? "category nul" : ""}
       >
-        <MenuItem value="1">Entrée</MenuItem>
-        <MenuItem value="2">Plat</MenuItem>
+        {categories.map((category) => (
+          <MenuItem value={category.id}>{category.name} </MenuItem>
+        ))}
       </TextField>
 
       {/*INGREDIENT*/}

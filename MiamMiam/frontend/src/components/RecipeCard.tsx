@@ -15,9 +15,11 @@ import FavoriteButton from "./FavoriteButton";
 import RecipeDetail from "./RecipeDetail";
 
 interface RecipeCardProps {
+  onDelete: (id: number) => void;
   recipe: Recipe;
 }
-const RecipeCard = ({ recipe }: RecipeCardProps) => {
+
+const RecipeCard = ({ recipe, onDelete }: RecipeCardProps) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -52,6 +54,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
       <CardActions>
         <FavoriteButton />
         <Button size="small">Voir la recette</Button>
+        <Button onClick={() => onDelete(recipe.id)}>Supprimer</Button>
       </CardActions>
       <RecipeDetail recipe={recipe} />
     </Card>

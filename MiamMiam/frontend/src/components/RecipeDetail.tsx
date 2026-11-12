@@ -40,8 +40,8 @@ const RecipeDetail = ({ recipe }: RecipeDetailProps) => {
       <ul>
         {recipe.ingredients.map((ingredient, index) => (
           <li key={index}>
-            {(ingredient.quantity * servings).toFixed(1)} {ingredient.unit}{" "}
-            {ingredient.name}
+            {((ingredient.quantity / recipe.servings) * servings).toFixed(1)}{" "}
+            {ingredient.unit} {ingredient.name}
           </li>
         ))}
       </ul>

@@ -7,6 +7,7 @@ import type { NewRecipe, Recipe } from "./models/recipe";
 import { use, useState } from "react";
 import { recipes as initialRecipes } from "./data/recipes";
 import { NewReleases } from "@mui/icons-material";
+import SearchBar from "./components/SearchBar";
 
 const theme = createTheme({
   palette: {
@@ -18,8 +19,12 @@ const App = () => {
   const [recipes, setRecipes] = useState<Recipe[]>(initialRecipes);
   const [query, setQuery] = useState("");
 
-  const filteredRecipes = recipes.filter((recipe) =>
-    recipe.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+  const filteredRecipes = recipes.filter(
+    (recipe) =>
+      recipe.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
+      recipe.description
+        .toLocaleLowerCase()
+        .includes(query.toLocaleLowerCase()),
   );
 
   const addRecipe = (NewRecipe: NewRecipe) => {
@@ -38,6 +43,7 @@ const App = () => {
         <PageLayout title="Miam Miam">
           <img src={logoMiamMiam} alt="Logo MiamMiam" />
           <RecipeForm onAdd={addRecipe} />
+          <SearchBar value={query} onChange={setQuery} />
           <RecipeList recipes={filteredRecipes} onDelete={deleteRecipe} />
         </PageLayout>
       </div>

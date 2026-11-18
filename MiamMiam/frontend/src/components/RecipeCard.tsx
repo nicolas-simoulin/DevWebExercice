@@ -17,9 +17,16 @@ import RecipeDetail from "./RecipeDetail";
 interface RecipeCardProps {
   onDelete: (id: number) => void;
   recipe: Recipe;
+  favorites: number[];
+  onToggle: (id: number) => void;
 }
 
-const RecipeCard = ({ recipe, onDelete }: RecipeCardProps) => {
+const RecipeCard = ({
+  recipe,
+  onDelete,
+  favorites,
+  onToggle,
+}: RecipeCardProps) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -52,7 +59,10 @@ const RecipeCard = ({ recipe, onDelete }: RecipeCardProps) => {
         />
       </CardContent>
       <CardActions>
-        <FavoriteButton />
+        <FavoriteButton
+          isFavorite={favorites.includes(recipe.id)}
+          onToggle={() => onToggle(recipe.id)}
+        />
         <Button size="small">Voir la recette</Button>
         <Button onClick={() => onDelete(recipe.id)}>Supprimer</Button>
       </CardActions>

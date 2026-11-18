@@ -49,6 +49,14 @@ const App = () => {
     setQuery("");
   };
 
+  function toggleFavorite(id: number) {
+    if (favorites.includes(id)) {
+      setFavorites(favorites.filter((favorite) => favorite !== id));
+    } else {
+      setFavorites([...favorites, id]);
+    }
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -69,7 +77,12 @@ const App = () => {
               <Button onClick={resetFilter}>reinitialiser filtres</Button>
             </>
           ) : (
-            <RecipeList recipes={filteredRecipes} onDelete={deleteRecipe} />
+            <RecipeList
+              recipes={filteredRecipes}
+              onDelete={deleteRecipe}
+              favorites={favorites}
+              onToggle={toggleFavorite}
+            />
           )}
         </PageLayout>
       </div>

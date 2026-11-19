@@ -61,7 +61,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div className="app">
-        <PageLayout title="Miam Miam">
+        <PageLayout title="Miam Miam" favoritesCount={favorites.length}>
           <img src={logoMiamMiam} alt="Logo MiamMiam" />
           <RecipeForm onAdd={addRecipe} />
           <SearchBar value={query} onChange={setQuery} />

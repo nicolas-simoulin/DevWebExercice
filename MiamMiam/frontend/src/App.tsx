@@ -1,20 +1,13 @@
-import PageLayout from "./components/PageLayout";
-import RecipeList from "./components/RecipeList";
-import logoMiamMiam from "./assets/miammiam.png";
-import {
-  Button,
-  createTheme,
-  CssBaseline,
-  ThemeProvider,
-  Typography,
-} from "@mui/material";
-import RecipeForm from "./components/RecipeForm";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import type { NewRecipe, Recipe } from "./models/recipe";
-import { use, useState } from "react";
+import { useState } from "react";
 import { recipes as initialRecipes } from "./data/recipes";
-import { Category, NewReleases } from "@mui/icons-material";
-import SearchBar from "./components/SearchBar";
-import CategoryFilter from "./components/CategoryFilter";
+import Layout from "./components/Layout";
+import { BrowserRouter, Route, Routes } from "react-router";
+import HomePage from "./pages/HomePage";
+import NotFoundPage from "./pages/NotFoundPage";
+import RecipeDetailPage from "./pages/RecipeDetailPage";
+import AddRecipePage from "./pages/AddRecipePage";
 
 const theme = createTheme({
   palette: {
@@ -60,32 +53,39 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div className="app">
-        <PageLayout title="Miam Miam" favoritesCount={favorites.length}>
-          <img src={logoMiamMiam} alt="Logo MiamMiam" />
-          <RecipeForm onAdd={addRecipe} />
-          <SearchBar value={query} onChange={setQuery} />
-          <CategoryFilter selectedId={categoryID} onSelect={setCategoryID} />
-          <Typography variant="h6" component="h1">
-            il y a {filteredRecipes.length} recettes
-          </Typography>
-          {filteredRecipes.length === 0 ? (
-            <>
-              <Typography variant="h6" component="h1">
-                aucune recette
-              </Typography>
-              <Button onClick={resetFilter}>reinitialiser filtres</Button>
-            </>
-          ) : (
-            <RecipeList
-              recipes={filteredRecipes}
-              onDelete={deleteRecipe}
-              favorites={favorites}
-              onToggle={toggleFavorite}
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Layout title="MiamMiam" favoritesCount={favorites.length} />
+            }
+          >
+            <Route
+              index
+              element={
+                <HomePage
+                  valueSearchBar="Rechercher une recette"
+                  onChangeSearchBar={filteredRecipes}
+                  selectedIDFilter={}
+                  onSelectFilter={filteredRecipes}
+                  recipesList={recipes}
+                  onDeleteList={deleteRecipe}
+                  favoritesList={favorites}
+                  onToggleList={toggleFavorite}
+                  onResetFilter={resetFilter}
+                />
+              }
             />
-          )}
-        </PageLayout>
-      </div>
+            <Route
+              path="recipes/new"
+              element={<AddRecipePage onAdd={addRecipe} />}
+            />
+            <Route path="recipes/:id" element={<RecipeDetailPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   );
 };

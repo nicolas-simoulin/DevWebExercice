@@ -65,11 +65,11 @@ const App = () => {
               index
               element={
                 <HomePage
-                  valueSearchBar="Rechercher une recette"
-                  onChangeSearchBar={filteredRecipes}
-                  selectedIDFilter={}
-                  onSelectFilter={filteredRecipes}
-                  recipesList={recipes}
+                  valueSearchBar={query}
+                  onChangeSearchBar={setQuery}
+                  selectedIDFilter={categoryID}
+                  onSelectFilter={setCategoryID}
+                  recipesList={filteredRecipes}
                   onDeleteList={deleteRecipe}
                   favoritesList={favorites}
                   onToggleList={toggleFavorite}
@@ -81,7 +81,10 @@ const App = () => {
               path="recipes/new"
               element={<AddRecipePage onAdd={addRecipe} />}
             />
-            <Route path="recipes/:id" element={<RecipeDetailPage />} />
+            <Route
+              path="recipes/:id"
+              element={<RecipeDetailPage recipes={recipes} />}
+            />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>

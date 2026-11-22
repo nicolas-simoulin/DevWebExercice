@@ -12,7 +12,7 @@ import type { Recipe } from "../models/recipe";
 import SoupKitchenIcon from "@mui/icons-material/SoupKitchen";
 import TimerIcon from "@mui/icons-material/Timer";
 import FavoriteButton from "./FavoriteButton";
-import RecipeDetail from "./RecipeDetail";
+import { Link } from "react-router";
 
 interface RecipeCardProps {
   onDelete: (id: number) => void;
@@ -63,10 +63,11 @@ const RecipeCard = ({
           isFavorite={favorites.includes(recipe.id)}
           onToggle={() => onToggle(recipe.id)}
         />
-        <Button size="small">Voir la recette</Button>
+        <Button component={Link} to={`/recipes/${recipe.id}`} size="small">
+          Voir la recette
+        </Button>
         <Button onClick={() => onDelete(recipe.id)}>Supprimer</Button>
       </CardActions>
-      <RecipeDetail recipe={recipe} />
     </Card>
   );
 };

@@ -1,4 +1,11 @@
-import { Toolbar, AppBar, Container, Typography, Button } from "@mui/material";
+import {
+  Toolbar,
+  AppBar,
+  Container,
+  Typography,
+  Button,
+  Box,
+} from "@mui/material";
 import { Favorite } from "@mui/icons-material";
 import { Link, Outlet } from "react-router";
 
@@ -12,13 +19,12 @@ const Layout = ({ title, favoritesCount }: LayoutProps) => {
     <>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            {title}
-          </Typography>
+          <Typography variant="h6">{title}</Typography>
           <Button component={Link} to="/" color="inherit">
             {" "}
             Recettes
           </Button>
+          <Box sx={{ flexGrow: 1 }} />
           <Button component={Link} to="/recipes/new" color="inherit">
             {" "}
             Ajouter

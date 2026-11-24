@@ -31,6 +31,7 @@ const App = () => {
   const addRecipe = (NewRecipe: NewRecipe) => {
     const recipe: Recipe = { ...NewRecipe, id: Date.now(), authorId: 1 };
     setRecipes([...recipes, recipe]);
+    return recipe.id;
   };
 
   const deleteRecipe = (id: number) => {
@@ -83,7 +84,9 @@ const App = () => {
             />
             <Route
               path="recipes/:id"
-              element={<RecipeDetailPage recipes={recipes} />}
+              element={
+                <RecipeDetailPage recipes={recipes} onDelete={deleteRecipe} />
+              }
             />
             <Route path="*" element={<NotFoundPage />} />
           </Route>

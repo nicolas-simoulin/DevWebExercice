@@ -21,12 +21,7 @@ interface RecipeCardProps {
   onToggle: (id: number) => void;
 }
 
-const RecipeCard = ({
-  recipe,
-  onDelete,
-  favorites,
-  onToggle,
-}: RecipeCardProps) => {
+const RecipeCard = ({ recipe, favorites, onToggle }: RecipeCardProps) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -66,7 +61,6 @@ const RecipeCard = ({
         <Button component={Link} to={`/recipes/${recipe.id}`} size="small">
           Voir la recette
         </Button>
-        <Button onClick={() => onDelete(recipe.id)}>Supprimer</Button>
       </CardActions>
     </Card>
   );

@@ -1,19 +1,19 @@
 import type { Recipe } from "../models/recipe";
 import RecipeDetail from "../components/RecipeDetail";
-import { Link, Route, useParams } from "react-router";
-import NotFoundPage from "./NotFoundPage";
+import { Link, useNavigate, useParams } from "react-router";
 import { Button, Typography } from "@mui/material";
 
 interface RecipeDetailPageProps {
   recipes: Recipe[];
+  onDelete: (id: number) => void;
 }
 
-const RecipeDetailPage = ({ recipes }: RecipeDetailPageProps) => {
+const RecipeDetailPage = ({ recipes, onDelete }: RecipeDetailPageProps) => {
   const { id } = useParams();
 
-  const recipeID = Number(id);
+  const navigate = useNavigate();
 
-  const recipe = recipes.find((r) => r.id === recipeID);
+  const recipe = recipes.find((r) => r.id === Number(id));
 
   if (!recipe) {
     return (
@@ -27,7 +27,20 @@ const RecipeDetailPage = ({ recipes }: RecipeDetailPageProps) => {
     );
   }
 
-  return <RecipeDetail recipe={recipe} />;
+  const handleDelete = () => {
+    onDelete(recipe.id);
+    navigate("/", { replace: true });
+  };
+
+  return (
+    <>
+      <Button onClick={() => navigate(-1)}> Retour </Button>
+      <RecipeDetail recipe={recipe} />
+      <Button color="error" onClick={handleDelete}>
+        Supprimer
+      </Button>
+    </>
+  );
 };
 
 export default RecipeDetailPage;

@@ -1,6 +1,6 @@
 import { IconButton, Stack, Typography } from "@mui/material";
 import type { Recipe } from "../models/recipe";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Remove } from "@mui/icons-material";
 import { Add } from "@mui/icons-material";
 
@@ -13,9 +13,20 @@ const RecipeDetail = ({ recipe }: RecipeDetailProps) => {
 
   const decrement = () => setServings((prev) => prev - 1);
   const increment = () => setServings((prev) => prev + 1);
+
+  useEffect(() => {
+    document.title = `${recipe.title} - MiamMiam`;
+
+    return () => {
+      document.title = "MiamMiam";
+    };
+  }, [recipe.title]);
+
   return (
     <>
-      <h2>{recipe.title}</h2>
+      <Typography variant="h4" component="h1">
+        {recipe.title}
+      </Typography>
       <p>{recipe.description}</p>
       <div>
         <strong>Préparation :</strong> {recipe.prepTime} min |
